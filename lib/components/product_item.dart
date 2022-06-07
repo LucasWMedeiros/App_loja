@@ -2,6 +2,7 @@
 
 import 'package:app_loja/models/produt.dart';
 import 'package:app_loja/screen/products_detail_screen.dart';
+import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
@@ -23,8 +24,9 @@ class ProductItem extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           onTap: (){
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ProductDetailScreen(product: product))
+            Navigator.of(context).pushNamed(
+            AppRoutes.PRODUCT_DETAIL,
+            arguments: product
             );
           },
         ),
