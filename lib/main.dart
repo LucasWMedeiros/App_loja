@@ -1,11 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:app_loja/providers/counter.dart';
-import 'package:app_loja/screen/counter_screen.dart';
+import 'package:app_loja/models/product_list.dart';
 import 'package:app_loja/screen/products_detail_screen.dart';
 import 'package:app_loja/screen/produtcs_overview_screen.dart';
 import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,18 +16,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.deepOrange,
-        fontFamily: 'Lato'
+    return ChangeNotifierProvider(
+      create: (_) => ProductList(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          accentColor: Colors.deepOrange,
+          fontFamily: 'Lato'
+        ),
+        home: ProductsOverviewScreen(),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen()
+        },
       ),
-      home: ProductsOverviewScreen(),
-      debugShowCheckedModeBanner: false,
-      routes: {
-        AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen()
-      },
     );
   }
 }

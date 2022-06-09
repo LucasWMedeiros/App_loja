@@ -1,13 +1,13 @@
 import 'package:app_loja/components/product_item.dart';
-import 'package:app_loja/data/DUMMY_DATA.dart';
 import 'package:app_loja/models/produt.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
-  final List<Product> loadedProducts = DUMMY_PRODUCTS;
 
   @override
   Widget build(BuildContext context) {
+  final List<Product> loadedProducts = Provider.of(context).ProductList;
     return Scaffold(
       appBar: AppBar(
         title: Text('Minha Loja'),
