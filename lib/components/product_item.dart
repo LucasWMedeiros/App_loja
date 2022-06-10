@@ -1,20 +1,16 @@
 // ignore_for_file: sort_child_properties_last, deprecated_member_use
 
 import 'package:app_loja/models/produt.dart';
-import 'package:app_loja/screen/products_detail_screen.dart';
 import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
-  final Product product;
-
-  const ProductItem({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -33,9 +29,11 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Colors.black45,
           leading: IconButton(
-            icon: const Icon(Icons.favorite_border),
+            icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
             color: Theme.of(context).accentColor,
-            onPressed: () {},
+            onPressed: () {
+              product.toggleFavorite();
+            },
           ),
           title: Text(
             product.title!,
