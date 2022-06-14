@@ -17,7 +17,7 @@ class ProductItem extends StatelessWidget {
       child: GridTile(
         child: GestureDetector(
           child: Image.network(
-            product.imageUrl!,
+            product.imageUrl,
             fit: BoxFit.cover,
           ),
           onTap: () {
@@ -38,7 +38,7 @@ class ProductItem extends StatelessWidget {
             ),
           ),
           title: Text(
-            product.title!,
+            product.name,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 10),
           ),
