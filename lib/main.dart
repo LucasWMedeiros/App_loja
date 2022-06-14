@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/product_list.dart';
 import 'package:app_loja/screen/products_detail_screen.dart';
 import 'package:app_loja/screen/produtcs_overview_screen.dart';
@@ -16,8 +17,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ProductList(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProductList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Cart(),
+        )
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
