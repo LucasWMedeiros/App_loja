@@ -1,7 +1,8 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
 
 import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/product_list.dart';
+import 'package:app_loja/screen/cart_screen.dart';
 import 'package:app_loja/screen/products_detail_screen.dart';
 import 'package:app_loja/screen/produtcs_overview_screen.dart';
 import 'package:app_loja/utils/app_routes.dart';
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
         home: ProductsOverviewScreen(),
         debugShowCheckedModeBanner: false,
         routes: {
-          AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen()
+          AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
+          AppRoutes.CART: (context) => CartScreen()
         },
       ),
     );
