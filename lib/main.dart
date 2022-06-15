@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
 
 import 'package:app_loja/models/cart.dart';
+import 'package:app_loja/models/order_list.dart';
 import 'package:app_loja/models/product_list.dart';
 import 'package:app_loja/screen/cart_screen.dart';
 import 'package:app_loja/screen/products_detail_screen.dart';
@@ -25,7 +26,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrderList(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
