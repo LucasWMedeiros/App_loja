@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app_loja/components/cart_item_widget.dart';
 import 'package:app_loja/models/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Cart cart = Provider.of(context);
+    final itens = cart.items.values.toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carrinho'),
@@ -52,7 +54,13 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: itens.length,
+              itemBuilder: ((context, index) => CartItemWidget(cartItem: itens[index])),
+            )
+            )
         ],
       ),
     );

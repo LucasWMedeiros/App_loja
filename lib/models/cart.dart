@@ -24,7 +24,7 @@ class Cart with ChangeNotifier {
   }
 
   void addItem(Product product) {
-    if (_items.containsKey(product)) {
+    if (_items.containsKey(product.id)) {
       _items.update(
           product.id,
           (existingItem) => CartItem(
