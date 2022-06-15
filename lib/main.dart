@@ -39,10 +39,10 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato'
         ),
-        home: ProductsOverviewScreen(),
         debugShowCheckedModeBanner: false,
         routes: {
-          AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
+          AppRoutes.HOME: (context) => ProductsOverviewScreen(),
+          AppRoutes.PRODUCT_DETAIL: (context) => ProductDetailScreen(),
           AppRoutes.CART: (context) => CartScreen(),
           AppRoutes.ORDERS:(context) => OrdersScreen(),
         },

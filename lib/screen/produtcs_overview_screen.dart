@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
+import 'package:app_loja/components/app_drawer.dart';
 import 'package:app_loja/components/badge.dart';
 import 'package:app_loja/components/product_grid.dart';
 import 'package:app_loja/models/cart.dart';
@@ -61,6 +62,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       body: ProductGrid(_showFavoriteOnly),
+      drawer: AppDrawer(),
     );
   }
 }
