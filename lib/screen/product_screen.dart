@@ -1,4 +1,5 @@
 import 'package:app_loja/components/app_drawer.dart';
+import 'package:app_loja/components/product_item.dart';
 import 'package:app_loja/models/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -22,7 +23,12 @@ class ProductsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
           itemCount: products.itemsCount,
-          itemBuilder: ((context, index) => Text(products.items[index].name)),
+          itemBuilder: ((context, index) => Column(
+            children: [
+              ProducItem(product: products.items[index]),
+              Divider()
+            ],
+          )),
         ),
       ),
     );
