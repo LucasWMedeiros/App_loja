@@ -1,6 +1,7 @@
 import 'package:app_loja/components/app_drawer.dart';
 import 'package:app_loja/components/product_item.dart';
 import 'package:app_loja/models/product_list.dart';
+import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -17,6 +18,14 @@ class ProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Gerenciar Produtos'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.PRODUCT_FORM);
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
       drawer: const AppDrawer(),
       body: Padding(
@@ -24,11 +33,11 @@ class ProductsScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: products.itemsCount,
           itemBuilder: ((context, index) => Column(
-            children: [
-              ProducItem(product: products.items[index]),
-              Divider()
-            ],
-          )),
+                children: [
+                  ProducItem(product: products.items[index]),
+                  Divider()
+                ],
+              )),
         ),
       ),
     );
