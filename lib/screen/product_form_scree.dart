@@ -15,6 +15,16 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         title: const Text('Formulario de Produto'),
         centerTitle: true,
       ),
+      body: Form(
+        child: ListView(
+          children: [
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Nome'),
+              textInputAction: TextInputAction.next,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
