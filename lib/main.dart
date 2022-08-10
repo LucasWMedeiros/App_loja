@@ -5,7 +5,7 @@ import 'package:app_loja/models/order_list.dart';
 import 'package:app_loja/models/product_list.dart';
 import 'package:app_loja/screen/cart_screen.dart';
 import 'package:app_loja/screen/orders_screen.dart';
-import 'package:app_loja/screen/product_form_scree.dart';
+import 'package:app_loja/screen/product_form_screen.dart';
 import 'package:app_loja/screen/product_screen.dart';
 import 'package:app_loja/screen/products_detail_screen.dart';
 import 'package:app_loja/screen/produtcs_overview_screen.dart';
