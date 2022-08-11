@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:math';
+
 import 'package:app_loja/data/DUMMY_DATA.dart';
 import 'package:app_loja/models/produt.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +16,16 @@ class ProductList with ChangeNotifier{
   }
 
 
+  void addProductFromData(Map<String, Object> data){
+    final newProduct = Product(
+      id: Random().nextDouble().toString(),
+      name: data['name'] as String,
+      description: data['description'] as String,
+      price: data['price'] as double,
+      imageUrl: data['imageUrl'] as String,
+    );
+    addProduct(newProduct);
+  }
   void addProduct(Product product){
     _items.add(product);
     notifyListeners();

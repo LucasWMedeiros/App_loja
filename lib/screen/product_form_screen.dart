@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:app_loja/models/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:app_loja/models/produt.dart';
+import 'package:provider/provider.dart';
 
 class ProductFormScreen extends StatefulWidget {
   ProductFormScreen({Key? key}) : super(key: key);
@@ -38,6 +40,11 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     setState(() {});
   }
 
+  bool isValidImageUrl(String url){
+    bool isValidUrl = url.trim().isEmpty /*Uri.tryParse(url)?.hasAbsolutePath ?? false*/;
+    return isValidUrl;
+  }
+
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
 
@@ -45,16 +52,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       return;
     }
     _formKey.currentState?.save();
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      price: _formData['price'] as double,
-      imageUrl: _formData['imageUrl'] as String,
-    );
-    print(newProduct.id);
-    print(newProduct.name);
-    print(newProduct.price);
+    
+    Provider.of<ProductList>(context, listen: false).addProductFromData(_formData);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -108,6 +108,15 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                   },
                   onSaved: (price) =>
                       _formData['price'] = double.parse(price ?? '0'),
+                      validator: (_price) {
+                        final priceString = _price ?? '-1';
+                        final price = double.tryParse(priceString) ?? -1;
+
+                        if(price <= 0) {
+                          return 'Informe um preço válido.';
+                        }
+                        return null;
+                      },
                 ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Descrição'),
@@ -116,6 +125,16 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                   maxLines: 3,
                   onSaved: (description) =>
                       _formData['description'] = description ?? '',
+                      validator: (_description) {
+                    final description = _description ?? '';
+                    if(description.trim().isEmpty){
+                      return 'É obrigatório uma descrição';
+                    }
+                    if(description.trim().length < 10){
+                      return 'Descrição precisa de no minimo 10 letras';
+                    }
+                    return null;
+                  },
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -130,6 +149,13 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                         controller: _imageUrlController,
                         onSaved: (imageUrl) =>
                             _formData['imageUrl'] = imageUrl ?? '',
+                        validator: (_imageUrl) {
+                          final imageUrl = _imageUrl ?? '';
+                          if (isValidImageUrl(imageUrl)) {
+                            return 'Informe uma Url valida.';
+                          }
+                          return null;
+                        },
                         onFieldSubmitted: (_) => _submitForm(),
                       ),
                     ),

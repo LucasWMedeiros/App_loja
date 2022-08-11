@@ -1,5 +1,6 @@
 import 'package:app_loja/models/produt.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({
@@ -16,6 +17,7 @@ class ProductDetailScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        
         child: Column(
           children: [
             Container(
