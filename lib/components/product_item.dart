@@ -1,6 +1,8 @@
+import 'package:app_loja/models/product_list.dart';
 import 'package:app_loja/models/produt.dart';
 import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProducItem extends StatelessWidget {
   final Product product;
@@ -28,7 +30,33 @@ class ProducItem extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text('Exclusão de Produto'),
+                    content: const Text('Tem certeza que deseja excluir?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Não'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Provider.of<ProductList>(
+                            context,
+                            listen: false,
+                          ).removeProduct(product);
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Sim'),
+                      )
+                    ],
+                  ),
+                );
+              },
               icon: const Icon(Icons.delete),
               color: Theme.of(context).errorColor,
             ),
