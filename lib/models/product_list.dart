@@ -1,12 +1,15 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, prefer_const_declarations
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:app_loja/data/DUMMY_DATA.dart';
 import 'package:app_loja/models/produt.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 
 class ProductList with ChangeNotifier{
+  final _baseUrl ='https://shop-curso-e9b83-default-rtdb.firebaseio.com';
   List<Product> _items = DUMMY_PRODUCTS;
 
   List<Product> get  items => [..._items];
@@ -33,6 +36,17 @@ class ProductList with ChangeNotifier{
     }
   }
   void addProduct(Product product){
+    post(
+      Uri.parse('$_baseUrl/products.json'),
+      body: jsonEncode({
+        "name": product.name,
+        "price": product.price,
+        "description": product.description,
+        "imageUrl": product.imageUrl,
+        "isFavorite": product.isFavorite,
+      })
+    );
+
     _items.add(product);
     notifyListeners();
   }
