@@ -28,6 +28,26 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if(_formData.isEmpty) {
+      final arg = ModalRoute.of(context)?.settings.arguments;
+
+      if(arg != null) {
+        final product = arg as Product;
+        _formData['id'] = product.id;
+        _formData['name'] = product.name;
+        _formData['price'] = product.price;
+        _formData['description'] = product.description;
+        _formData['imageUrl'] = product.imageUrl;
+
+        _imageUrlController.text = product.imageUrl;
+      }
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _priceFocus.dispose();
@@ -40,8 +60,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     setState(() {});
   }
 
-  bool isValidImageUrl(String url){
-    bool isValidUrl = url.trim().isEmpty /*Uri.tryParse(url)?.hasAbsolutePath ?? false*/;
+  bool isValidImageUrl(String url) {
+    bool isValidUrl =
+        url.trim().isEmpty /*Uri.tryParse(url)?.hasAbsolutePath ?? false*/;
     return isValidUrl;
   }
 
@@ -52,8 +73,11 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       return;
     }
     _formKey.currentState?.save();
-    
-    Provider.of<ProductList>(context, listen: false).addProductFromData(_formData);
+
+    Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).SaveProduct(_formData);
     Navigator.of(context).pop();
   }
 
@@ -78,6 +102,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
             child: ListView(
               children: [
                 TextFormField(
+                  initialValue: _formData['name']?.toString(),
                   decoration: const InputDecoration(
                     labelText: 'Nome',
                   ),
@@ -88,16 +113,17 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                   onSaved: (name) => _formData['name'] = name ?? '',
                   validator: (_name) {
                     final name = _name ?? '';
-                    if(name.trim().isEmpty){
+                    if (name.trim().isEmpty) {
                       return 'Nome é obrigatório';
                     }
-                    if(name.trim().length < 3){
+                    if (name.trim().length < 3) {
                       return 'Nome precisa no minimo de 3 letras';
                     }
                     return null;
                   },
                 ),
                 TextFormField(
+                  initialValue: _formData['price']?.toString(),
                   decoration: const InputDecoration(labelText: 'Valor'),
                   focusNode: _priceFocus,
                   textInputAction: TextInputAction.next,
@@ -108,29 +134,30 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                   },
                   onSaved: (price) =>
                       _formData['price'] = double.parse(price ?? '0'),
-                      validator: (_price) {
-                        final priceString = _price ?? '-1';
-                        final price = double.tryParse(priceString) ?? -1;
+                  validator: (_price) {
+                    final priceString = _price ?? '-1';
+                    final price = double.tryParse(priceString) ?? -1;
 
-                        if(price <= 0) {
-                          return 'Informe um preço válido.';
-                        }
-                        return null;
-                      },
+                    if (price <= 0) {
+                      return 'Informe um preço válido.';
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
+                  initialValue: _formData['description']?.toString(),
                   decoration: const InputDecoration(labelText: 'Descrição'),
                   focusNode: _descriptionFocus,
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
                   onSaved: (description) =>
                       _formData['description'] = description ?? '',
-                      validator: (_description) {
+                  validator: (_description) {
                     final description = _description ?? '';
-                    if(description.trim().isEmpty){
+                    if (description.trim().isEmpty) {
                       return 'É obrigatório uma descrição';
                     }
-                    if(description.trim().length < 10){
+                    if (description.trim().length < 10) {
                       return 'Descrição precisa de no minimo 10 letras';
                     }
                     return null;
@@ -176,9 +203,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                           ? const Text('Informe a Url')
                           : FittedBox(
                               // ignore: sort_child_properties_last
-                              child: Image.network(_imageUrlController.text, width: 90, height: 90,),
+                              child: Image.network(
+                                _imageUrlController.text,
+                                width: 90,
+                                height: 90,
+                              ),
                               fit: BoxFit.cover,
-                              
                             ),
                     )
                   ],
