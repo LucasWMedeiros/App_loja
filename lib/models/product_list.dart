@@ -68,7 +68,6 @@ class ProductList with ChangeNotifier {
           "isFavorite": product.isFavorite,
         }));
     final id = jsonDecode(response.body)['name'];
-    print(id);
     _items.add(Product(
       id: id,
       name: product.name,
