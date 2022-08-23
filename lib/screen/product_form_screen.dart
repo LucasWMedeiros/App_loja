@@ -85,7 +85,21 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     Provider.of<ProductList>(
       context,
       listen: false,
-    ).SaveProduct(_formData).then((value) {
+    ).SaveProduct(_formData).catchError((error) {
+      return showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro!'),
+          content: Text('Ocorreu um erro para salvar o produto'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Ok'),
+            )
+          ],
+        ),
+      );
+    }).then((value) {
       setState(() => _isLoading = false);
       Navigator.of(context).pop();
     });
