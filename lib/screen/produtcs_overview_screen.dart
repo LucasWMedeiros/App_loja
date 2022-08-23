@@ -19,6 +19,7 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   bool _showFavoriteOnly = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -27,7 +28,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     Provider.of<ProductList>(
       context,
       listen: false,
-    ).loadProducts();
+    ).loadProducts().then((value) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -69,7 +74,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   Badge(value: cart.itemsCount.toString(), child: child!))),
         ],
       ),
-      body: ProductGrid(_showFavoriteOnly),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductGrid(_showFavoriteOnly),
       drawer: AppDrawer(),
     );
   }

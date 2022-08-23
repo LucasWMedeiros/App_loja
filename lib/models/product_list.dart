@@ -3,14 +3,14 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:app_loja/data/DUMMY_DATA.dart';
 import 'package:app_loja/models/produt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 
 class ProductList with ChangeNotifier {
-  final _url = 'https://shop-curso-e9b83-default-rtdb.firebaseio.com/products.json';
-  List<Product> _items = DUMMY_PRODUCTS;
+  final _url =
+      'https://shop-curso-e9b83-default-rtdb.firebaseio.com/products.json';
+  List<Product> _items = [];
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
@@ -21,7 +21,21 @@ class ProductList with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final response = await get(Uri.parse(_url));
-    print(jsonDecode(response.body));
+    if(response.body == 'null') return;
+    Map<String, dynamic> data = jsonDecode(response.body);
+    data.forEach((productId, productData) {
+      _items.add(
+        Product(
+          id: productId,
+          name: productData['name'],
+          description: productData['description'],
+          price: productData['price'],
+          imageUrl: productData['imageUrl'],
+          isFavorite: productData['isFavorite'],
+        ),
+      );
+    });
+    notifyListeners();
   }
 
   Future<void> SaveProduct(Map<String, Object> data) {
@@ -50,17 +64,16 @@ class ProductList with ChangeNotifier {
           "imageUrl": product.imageUrl,
           "isFavorite": product.isFavorite,
         }));
-      final id = jsonDecode(response.body)['name'];
-      print(id);
-      _items.add(Product(
-          id: id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          imageUrl: product.imageUrl,
-          ));
-      notifyListeners();
-    
+    final id = jsonDecode(response.body)['name'];
+    print(id);
+    _items.add(Product(
+      id: id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+    ));
+    notifyListeners();
   }
 
   Future<void> updateProduct(Product product) {
