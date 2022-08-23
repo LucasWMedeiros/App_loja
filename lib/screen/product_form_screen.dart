@@ -70,7 +70,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     return isValidUrl;
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
@@ -81,12 +81,13 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     setState(() {
       _isLoading = true;
     });
-
-    Provider.of<ProductList>(
-      context,
-      listen: false,
-    ).SaveProduct(_formData).catchError((error) {
-      return showDialog<void>(
+    try {
+      await Provider.of<ProductList>(
+        context,
+        listen: false,
+      ).SaveProduct(_formData);
+    } catch (error) {
+      await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
           title: Text('Ocorreu um erro!'),
@@ -99,10 +100,10 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
           ],
         ),
       );
-    }).then((value) {
+    } finally {
       setState(() => _isLoading = false);
       Navigator.of(context).pop();
-    });
+    }
   }
 
   @override
