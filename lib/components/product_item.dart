@@ -1,3 +1,4 @@
+import 'package:app_loja/exceptions/http_exception.dart';
 import 'package:app_loja/models/product_list.dart';
 import 'package:app_loja/models/produt.dart';
 import 'package:app_loja/utils/app_routes.dart';
@@ -10,6 +11,7 @@ class ProducItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(product.imageUrl),
@@ -30,6 +32,8 @@ class ProducItem extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
             IconButton(
+              icon: const Icon(Icons.delete),
+              color: Theme.of(context).errorColor,
               onPressed: () {
                 showDialog<bool>(
                   context: context,
@@ -44,22 +48,24 @@ class ProducItem extends StatelessWidget {
                         child: const Text('Não'),
                       ),
                       TextButton(
-                        onPressed: () {
-                          Provider.of<ProductList>(
-                            context,
-                            listen: false,
-                          ).removeProduct(product);
-                          Navigator.of(context).pop();
-                        },
                         child: const Text('Sim'),
-                      )
-                    ],
+                        onPressed: () => Navigator.of(context).pop()
+                  )]
                   ),
-                );
-              },
-              icon: const Icon(Icons.delete),
-              color: Theme.of(context).errorColor,
-            ),
+                ).then((value) async {
+                          try {
+                            await Provider.of<ProductList>(
+                              context,
+                              listen: false,
+                            ).removeProduct(product);
+                          } on HttpException catch (error) {
+                            msg.showSnackBar(SnackBar(
+                              content: Text(error.toString()),
+                            ),
+                      );
+                    }
+                  });
+                })
           ],
         ),
       ),
