@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 
 class ProductList with ChangeNotifier {
-  final _baseUrl = 'https://shop-curso-e9b83-default-rtdb.firebaseio.com';
+  final _url = 'https://shop-curso-e9b83-default-rtdb.firebaseio.com/products.json';
   List<Product> _items = DUMMY_PRODUCTS;
 
   List<Product> get items => [..._items];
@@ -17,6 +17,11 @@ class ProductList with ChangeNotifier {
       _items.where((prod) => prod.isFavorite).toList();
   int get itemsCount {
     return _items.length;
+  }
+
+  Future<void> loadProducts() async {
+    final response = await get(Uri.parse(_url));
+    print(jsonDecode(response.body));
   }
 
   Future<void> SaveProduct(Map<String, Object> data) {
@@ -37,7 +42,7 @@ class ProductList with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final response = await post(Uri.parse('$_baseUrl/products.json'),
+    final response = await post(Uri.parse(_url),
         body: jsonEncode({
           "name": product.name,
           "price": product.price,

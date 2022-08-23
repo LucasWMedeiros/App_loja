@@ -5,6 +5,7 @@ import 'package:app_loja/components/badge.dart';
 import 'package:app_loja/components/product_grid.dart';
 import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/cart_item.dart';
+import 'package:app_loja/models/product_list.dart';
 import 'package:app_loja/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,16 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   bool _showFavoriteOnly = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).loadProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,17 +59,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             },
           ),
           Consumer<Cart>(
-            child: IconButton(
-                onPressed: (){
+              child: IconButton(
+                onPressed: () {
                   Navigator.pushNamed(context, AppRoutes.CART);
                 },
                 icon: Icon(Icons.shopping_cart),
               ),
-            builder: ((context, cart, child) => Badge(
-              value: cart.itemsCount.toString(),
-              child: child!
-            )
-          )),
+              builder: ((context, cart, child) =>
+                  Badge(value: cart.itemsCount.toString(), child: child!))),
         ],
       ),
       body: ProductGrid(_showFavoriteOnly),
