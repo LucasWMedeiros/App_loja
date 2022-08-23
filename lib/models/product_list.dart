@@ -5,12 +5,13 @@ import 'dart:math';
 
 import 'package:app_loja/exceptions/http_exception.dart';
 import 'package:app_loja/models/produt.dart';
+import 'package:app_loja/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 
 class ProductList with ChangeNotifier {
   final _baseUrl =
-      'https://shop-curso-e9b83-default-rtdb.firebaseio.com/products';
+      Constants.PRODUCT_BASE_URL;
   List<Product> _items = [];
 
   List<Product> get items => [..._items];
