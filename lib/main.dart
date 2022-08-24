@@ -3,6 +3,7 @@
 import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/order_list.dart';
 import 'package:app_loja/models/product_list.dart';
+import 'package:app_loja/screen/auth_screen.dart';
 import 'package:app_loja/screen/cart_screen.dart';
 import 'package:app_loja/screen/orders_screen.dart';
 import 'package:app_loja/screen/product_form_screen.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
+          AppRoutes.AUTH: (context) => authPage(),
           AppRoutes.HOME: (context) => ProductsOverviewScreen(),
           AppRoutes.PRODUCT_DETAIL: (context) => ProductDetailScreen(),
           AppRoutes.CART: (context) => CartScreen(),
