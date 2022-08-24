@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
 
+import 'package:app_loja/models/auth.dart';
 import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/order_list.dart';
 import 'package:app_loja/models/product_list.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => OrderList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Auth(),
         ),
       ],
       child: MaterialApp(
