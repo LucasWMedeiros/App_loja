@@ -32,39 +32,37 @@ class ProducItem extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
             IconButton(
-              icon: const Icon(Icons.delete),
-              color: Theme.of(context).errorColor,
-              onPressed: () {
-                showDialog<bool>(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text('Exclusão de Produto'),
-                    content: const Text('Tem certeza que deseja excluir?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Não'),
-                      ),
-                      TextButton(
-                        child: const Text('Sim'),
-                        onPressed: () => Navigator.of(context).pop()
-                  )]
-                  ),
-                ).then((value) async {
-                          try {
-                            await Provider.of<ProductList>(
-                              context,
-                              listen: false,
-                            ).removeProduct(product);
-                          } on HttpException catch (error) {
-                            msg.showSnackBar(SnackBar(
-                              content: Text(error.toString()),
-                            ),
-                      );
-                    }
-                  });
+                icon: const Icon(Icons.delete),
+                color: Theme.of(context).errorColor,
+                onPressed: () {
+                  showDialog<bool>(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                        title: const Text('Exclusão de Produto'),
+                        content: const Text('Tem certeza que deseja excluir?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: const Text('Não'),
+                          ),
+                          TextButton(
+                              child: const Text('Sim'),
+                              onPressed: () async {
+                                try {
+                                  await Provider.of<ProductList>(
+                                    context,
+                                    listen: false,
+                                  ).removeProduct(product);
+                                } on HttpException catch (error) {
+                                  msg.showSnackBar(SnackBar(
+                                      content: Text(error.toString())));
+                                  Navigator.of(context).pop(true);
+                                }
+                              })
+                        ]),
+                  );
                 })
           ],
         ),

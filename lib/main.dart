@@ -2,8 +2,10 @@
 
 import 'package:app_loja/models/auth.dart';
 import 'package:app_loja/models/cart.dart';
+import 'package:app_loja/models/order.dart';
 import 'package:app_loja/models/order_list.dart';
 import 'package:app_loja/models/product_list.dart';
+import 'package:app_loja/screen/auth_or_home_screen.dart';
 import 'package:app_loja/screen/auth_screen.dart';
 import 'package:app_loja/screen/cart_screen.dart';
 import 'package:app_loja/screen/orders_screen.dart';
@@ -27,16 +29,22 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ProductList(),
+          create: (_) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, ProductList>(
+          create: (_) => ProductList('', []),
+          update: (ctx, auth, previous) {
+            return ProductList(auth.token ?? '', previous?.items ?? []);
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => OrderList(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => Auth(),
+        ChangeNotifierProxyProvider<Auth, OrderList>(
+          create: (_) => OrderList('', []),
+          update: (ctx, auth, previous) {
+            return OrderList(auth.token ?? '', previous?.items ?? []);
+          },
         ),
       ],
       child: MaterialApp(
@@ -48,8 +56,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          AppRoutes.AUTH: (context) => authPage(),
-          AppRoutes.HOME: (context) => ProductsOverviewScreen(),
+          AppRoutes.AUTH_OR_HOME: (context) => AuthOrHomeScreen(),
           AppRoutes.PRODUCT_DETAIL: (context) => ProductDetailScreen(),
           AppRoutes.CART: (context) => CartScreen(),
           AppRoutes.ORDERS: (context) => OrdersScreen(),

@@ -5,8 +5,8 @@ import 'dart:math';
 import 'package:app_loja/components/auth_form.dart';
 import 'package:flutter/material.dart';
 
-class authPage extends StatelessWidget {
-  const authPage({Key? key}) : super(key: key);
+class authScreen extends StatelessWidget {
+  const authScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

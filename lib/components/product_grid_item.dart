@@ -1,5 +1,6 @@
 // ignore_for_file: sort_child_properties_last, deprecated_member_use
 
+import 'package:app_loja/models/auth.dart';
 import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/produt.dart';
 import 'package:app_loja/utils/app_routes.dart';
@@ -11,6 +12,7 @@ class ProductGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -32,7 +34,7 @@ class ProductGridItem extends StatelessWidget {
                   product.isFavorite ? Icons.favorite : Icons.favorite_border),
               color: Theme.of(context).accentColor,
               onPressed: () {
-                product.toggleFavorite();
+                product.toggleFavorite(auth.token ?? '');
               },
             ),
           ),
