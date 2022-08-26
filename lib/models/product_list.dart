@@ -12,10 +12,15 @@ import 'package:http/http.dart' as http;
 class ProductList with ChangeNotifier {
   final _baseUrl = Constants.PRODUCT_BASE_URL;
   List<Product> _items = [];
+  final String _userId;
 
   String _token;
 
-  ProductList(this._token, this._items);
+  ProductList([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
@@ -30,8 +35,16 @@ class ProductList with ChangeNotifier {
       Uri.parse('$_baseUrl.json?auth=$_token'),
     );
     if (response.body == 'null') return;
+
+    final favResponse = await http.get(
+        Uri.parse('${Constants.USER_FAVORITES_URL}/$_userId.json?auth=$_token'));
+
+    Map<String, dynamic> favData = 
+    favResponse.body == 'null' ? {} : jsonDecode(favResponse.body);
+
     Map<String, dynamic> data = jsonDecode(response.body);
     data.forEach((productId, productData) {
+      final isFavorite = favData[productId] ?? false;
       _items.add(
         Product(
           id: productId,
@@ -39,6 +52,7 @@ class ProductList with ChangeNotifier {
           description: productData['description'],
           price: productData['price'],
           imageUrl: productData['imageUrl'],
+          isFavorite: isFavorite
         ),
       );
     });
@@ -108,8 +122,8 @@ class ProductList with ChangeNotifier {
       _items.remove(product);
       notifyListeners();
 
-      final response =
-          await http.delete(Uri.parse('$_baseUrl/${product.id}.json?auth=$_token'));
+      final response = await http
+          .delete(Uri.parse('$_baseUrl/${product.id}.json?auth=$_token'));
 
       if (response.statusCode >= 400) {
         _items.insert(index, product);
