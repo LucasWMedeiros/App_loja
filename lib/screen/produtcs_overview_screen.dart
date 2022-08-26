@@ -21,6 +21,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   bool _showFavoriteOnly = false;
   bool _isLoading = true;
 
+  Future<void> _refreshProducts(BuildContext context) {
+    return Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).loadProducts();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -74,11 +81,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   Badge(value: cart.itemsCount.toString(), child: child!))),
         ],
       ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ProductGrid(_showFavoriteOnly),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshProducts(context),
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : ProductGrid(_showFavoriteOnly),
+      ),
       drawer: AppDrawer(),
     );
   }
