@@ -38,6 +38,14 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed(AppRoutes.PRODUCTS);
             },
           ),
+          Divider(),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text('Sobre o Aplicativo'),
+            onTap: (){
+              Navigator.of(context).pushReplacementNamed(AppRoutes.ABOUT);
+            },
+          )
         ],
       ),
     );

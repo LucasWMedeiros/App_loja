@@ -5,6 +5,7 @@ import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/order.dart';
 import 'package:app_loja/models/order_list.dart';
 import 'package:app_loja/models/product_list.dart';
+import 'package:app_loja/screen/about_screen.dart';
 import 'package:app_loja/screen/auth_or_home_screen.dart';
 import 'package:app_loja/screen/auth_screen.dart';
 import 'package:app_loja/screen/cart_screen.dart';
@@ -47,7 +48,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<Auth, OrderList>(
           create: (_) => OrderList(),
           update: (ctx, auth, previous) {
-            return OrderList(auth.token ?? '', previous?.items ?? []);
+            return OrderList(
+              auth.token ?? '',
+              auth.userId ?? '',
+              previous?.items ?? [],
+            );
           },
         ),
       ],
@@ -64,7 +69,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.CART: (context) => CartScreen(),
           AppRoutes.ORDERS: (context) => OrdersScreen(),
           AppRoutes.PRODUCTS: (context) => ProductsScreen(),
-          AppRoutes.PRODUCT_FORM: (context) => ProductFormScreen()
+          AppRoutes.PRODUCT_FORM: (context) => ProductFormScreen(),
+          AppRoutes.ABOUT: (context) => AboutScreen()
         },
       ),
     );
