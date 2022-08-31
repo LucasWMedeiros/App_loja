@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
 
+import 'package:app_loja/custom_rout.dart';
 import 'package:app_loja/models/auth.dart';
 import 'package:app_loja/models/cart.dart';
 import 'package:app_loja/models/order.dart';
@@ -59,9 +60,16 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-            primarySwatch: Colors.purple,
-            accentColor: Colors.deepOrange,
-            fontFamily: 'Lato'),
+          primarySwatch: Colors.purple,
+          accentColor: Colors.deepOrange,
+          fontFamily: 'Lato',
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: CustomPageTransitionBuilder(),
+              TargetPlatform.iOS: CustomPageTransitionBuilder(),
+            },
+          )
+        ),
         debugShowCheckedModeBanner: false,
         routes: {
           AppRoutes.AUTH_OR_HOME: (context) => AuthOrHomeScreen(),
